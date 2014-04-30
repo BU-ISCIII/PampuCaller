@@ -1,0 +1,13 @@
+Package: pampuCaller
+Title: 
+Version: 1.0
+Date: 2014-04-24
+Author: S. Monzon
+Description: 
+Imports: methods
+Depends: R (>= 2.7.0), 
+Suggests: 
+Maintainer: S. Monzon (smonzon@externos.isciii.es)
+License: 
+Collate: 
+LazyLoad: yes
