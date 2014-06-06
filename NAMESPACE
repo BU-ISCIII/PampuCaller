@@ -1,2 +1,20 @@
-import(methods)
+library(methods)
 
+
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+brewer_qualitative <- c("#0000ff","#ff0000","#483215","#008900","#7244c4","#e65a11","#000000","#e6e528","#ff00ee","#6e0000","#00c7dd","#d4b455","#8f008d","#736b00","#7d8cbf")
+
+library(ggplot2)
+library(plyr)
+library(scales)
+library(gridExtra)
+library(reshape2)
+
+
+rep1 <- read.table("data/IMR90_EX14_REP1-align.bam-count_variants.vcf",header=T)
+rep2 <- read.table("data/IMR90_EX14_REP2-align.bam-count_variants.vcf",header=T)
+rep1$sample <- "IMR90_EX14_REP1"                                                
+rep2$sample <- "IMR90_EX14_REP2"                                               
+variants <- rbind(rep1,rep2)
+variants_o <- new(controlSet,variation=variants)
