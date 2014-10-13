@@ -9,7 +9,7 @@ rep2 <- read.table("data/IMR90_EX14_REP2-align.bam-count_variants.vcf",header=T)
 rep1$sample <- "IMR90_EX14_REP1"                                                
 rep2$sample <- "IMR90_EX14_REP2"                                               
 variants <- rbind(rep1,rep2)
-variants_o <- new("controlSet",variation=variants)
+variants_o <- new("PositionSet",variation=variants)
 
 graph_barerror(variants_o,10000)
 
