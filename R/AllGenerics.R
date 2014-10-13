@@ -1,0 +1,5 @@
+setGeneric("graph_barerror",function(object,...) standardGeneric("graph_barerror"))
+setGeneric("get_variation",function(object,...) standardGeneric("get_variation"))
+setGeneric("mean_sd",function(object,...) standardGeneric("mean_sd"))
+setGeneric("get_sample",function(object) standardGeneric("get_sample"))
+# setGeneric("graph_barerror",function(object) standardGeneric("graph_barerror"))

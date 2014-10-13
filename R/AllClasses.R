@@ -8,7 +8,7 @@
 
 ## controlSet Class.
 
-setClass("controlSet",
+setClass("PositionSet",
 		representation(variation = "data.frame",
 						genes = "data.frame",
 						polymorphisms = "data.frame",
