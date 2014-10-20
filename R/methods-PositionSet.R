@@ -3,6 +3,7 @@
 # Script: methods-PositionSet.R
 # 
 # Author: smonzon
+# date: september 2014
 ###############################################################################
 
 ######
@@ -11,24 +12,41 @@
 
 setMethod("initialize","PositionSet",
 			function(.Object,
-					variation = .Object@variation,
-					genes = data.frame(),
+					control = data.frame(),
+					test = data.frame(),
+					regions = data.frame(),
 					polymorphisms = data.frame(),
 					samples = data.frame(),
 					... ){		
 
-					variation$depth <- variation$A + variation$a + variation$C + 
-									   + variation$c + variation$T + variation$t + variation$G + variation$g + variation$DEL + variation$INS
-					variation$per_A <- (variation$A + variation$a)/variation$depth
-					variation$per_C <- (variation$C + variation$c)/variation$depth
-					variation$per_T <- (variation$T + variation$t)/variation$depth
-					variation$per_G <- (variation$G + variation$g)/variation$depth
-					sample <- unique(variation$sample)
-					.Object@samples <- as.data.frame(sample)
-					.Object@variation <- variation
+					control <- calc_depth(control)
+					control <- calc_freq(control)
+
+					test <- calc_depth(test)
+					test <- calc_freq(test)
+
+					.Object@control <- control
+					.Object@test <- test
+					.Object@regions <- regions
+					.Object@polymorphisms <- polymorphisms
+					.Object@samples <- samples
 					return(.Object)
 			}
 )	
+
+calc_depth <- function(variation){
+	variation$depth <- variation$A + variation$a + variation$C + 
+									   + variation$c + variation$T + variation$t + variation$G + variation$g + variation$DEL + variation$INS
+	variation
+}
+
+calc_freq <- function(variation){
+	variation$per_A <- (variation$A + variation$a)/variation$depth
+	variation$per_C <- (variation$C + variation$c)/variation$depth
+	variation$per_T <- (variation$T + variation$t)/variation$depth
+	variation$per_G <- (variation$G + variation$g)/variation$depth
+	variation		
+}
 
 #######
 ## Class Validation
@@ -45,17 +63,18 @@ setValidity("PositionSet",function(object){
 setMethod("show","PositionSet",
 		function(object){
 			size<-dim(object)
-			cat(class(object), "instance with:\n\t",size[1],"variant positions\n\t",size[2],"genes\n\t",size[3],"polymorphisms\n\t",size[4],"samples\n")
+			cat(class(object), "instance with:\n\t",size[1],"control positions\n\t",size[2],"test positions\n\t",size[3],"regions\n\t",size[4],"polymorphisms\n\t",size[5],"samples\n")
 		}
 )
 
 setMethod("dim","PositionSet",
 		function(x){
-			size_variants <- nrow(x@variation)
-			size_genes <- nrow(x@genes)
+			size_control <- nrow(x@control)
+			size_test <- nrow(x@test)
+			size_regions <- nrow(x@regions)
 			size_po <- nrow(x@polymorphisms)
 			size_samples <- nrow(x@samples)
-			c(size_variants,size_genes,size_po,size_samples)
+			c(size_control,size_test,size_regions,size_po,size_samples)
 		}
 )
 
@@ -65,13 +84,16 @@ setMethod("dim","PositionSet",
 
 #' Graph_barerror function
 #'
-#' This function allows you to express your love of cats.
-#' @param love Do you love cats? Defaults to TRUE.
-#' @keywords cats
+#' This function allows you to draw a a bar graph showing frequency error per position.
+#' @param PositionSet Object.
+#' @param depth filter
+#' @param samples to print
+#' @param frequency zoom
+#' @keywords 
 #' @export
 #' @examples
 #' graph_barerror()
-graph_barerror <- function(object,depth,samples=object@samples$sample,zoom,...){
+.graph_barerror <- function(object,depth,samples=object@samples$sample,zoom,...){
 	var <- get_variation(object)
 	var <- var[var$depth > depth & var$sample %in% samples,]
 	var_ggplot <- melt(var,id.vars=c('sample','POS'), measure.vars=c('per_A','per_G','per_T','per_C'))
@@ -86,9 +108,7 @@ graph_barerror <- function(object,depth,samples=object@samples$sample,zoom,...){
  		facet_wrap(~sample)
 	g
 } 
-# 
-# scale_y_continuous(trans=log2_trans()) +	
-setMethod("graph_barerror",signature="PositionSet",graph_barerror)
+setMethod("graph_barerror",signature="PositionSet",.graph_barerror)
 
 #' mean_sd function
 #'
@@ -98,11 +118,11 @@ setMethod("graph_barerror",signature="PositionSet",graph_barerror)
 #' @export
 #' @examples
 #' mean_sd()
-mean_sd <- function(object,position,samples,nucleotide){
+.mean_sd <- function(object,position,samples,nucleotide){
 
 }
 
-setMethod("mean_sd",signature="PositionSet",mean_sd)
+setMethod("mean_sd",signature="PositionSet",.mean_sd)
 
 #' get_variation function
 #'
@@ -112,11 +132,11 @@ setMethod("mean_sd",signature="PositionSet",mean_sd)
 #' @export
 #' @examples
 #' get_variation()
-get_variation <- function(object){
-	variation <- object@variation
-	variation
+.get_variation <- function(object){
+	v <- object@variation
+	v
 }
-setMethod("get_variation",signature="PositionSet",get_variation)
+setMethod("get_variation",signature="PositionSet",.get_variation)
 
 #' get_sample function
 #'
@@ -126,8 +146,8 @@ setMethod("get_variation",signature="PositionSet",get_variation)
 #' @export
 #' @examples
 #' get_sample()
-get_sample <- function(object){
-	samples <- object@samples
-	samples
+.get_samples <- function(object){
+	s <- object@samples
+	s
 }
-setMethod("get_sample",signature="PositionSet",get_sample)
+setMethod("get_samples",signature="PositionSet",.get_samples)

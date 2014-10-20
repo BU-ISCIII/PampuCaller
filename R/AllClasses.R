@@ -3,15 +3,17 @@
 # Script: AllClasses.R
 # 
 # Author: smonzon
+# date: september 2014
 ###############################################################################
 
 
 ## controlSet Class.
 
 setClass("PositionSet",
-		representation(variation = "data.frame",
-						genes = "data.frame",
-						polymorphisms = "data.frame",
-						samples = "data.frame"
+		representation(control = "data.frame",
+					   test="data.frame",
+					   regions = "data.frame",
+					   polymorphisms = "data.frame",
+					   samples = "data.frame"
 						)
 		)

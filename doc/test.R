@@ -109,3 +109,13 @@ dev.off()
 pdf("foursamplescontrol_zoom_0.25",width=60,height=30)
 print(graph_barerror(variants_o,1000,zoom=c(0,0.25)))
 dev.off()
+
+
+################################################
+### PRUEBA Octubre 2014
+################################################
+
+library(pampuCaller)
+targets <- read_targets()
+regions <- read_regions("amplicones.bed")
+position_set <- create_position_set(targets,regions) 
