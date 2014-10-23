@@ -19,12 +19,14 @@ setMethod("initialize","PositionSet",
 					samples = data.frame(),
 					... ){		
 
+					#Calc precomputations
 					control <- calc_depth(control)
 					control <- calc_freq(control)
 
 					test <- calc_depth(test)
 					test <- calc_freq(test)
 
+					#Initialize object
 					.Object@control <- control
 					.Object@test <- test
 					.Object@regions <- regions
@@ -51,7 +53,7 @@ calc_freq <- function(variation){
 #######
 ## Class Validation
 #########
-## Implement real validation
+## TO DO: Implement real validation
 setValidity("PositionSet",function(object){
 		TRUE
 		}
@@ -82,6 +84,63 @@ setMethod("dim","PositionSet",
 ## Features
 ##################
 
+#' calling_prep function
+#' This function calculates 
+#' 
+#' @param object
+#' @param depth
+#' @param calling c(control,filter)
+#' @keywords region filter
+#' @export
+#' @examples
+#' region_filter(object)
+.calling_prep <- function(object,depth=20,calling="control"){
+	if(calling == "control"){
+		object <- regions_filter(object)
+		object <- mean_sd(object)
+
+	}else if(calling == "filter"){
+
+	}
+}
+setMethod("calling_prep",signature="PositionSet",.calling_prep)
+
+
+#' regions_filter function
+#' This function filters positions in control and test slot from positionSet per regions in regions slot
+#' 
+#' @param object
+#' @keywords region filter
+#' @export
+#' @examples
+#' region_filter(object)
+.regions_filter <- function(object,depth=20){
+	control_fil <- apply(as.matrix(object@regions),1,pos_filter,variation=object@control,depth=depth)
+	test_fil <- apply(as.matrix(object@regions),1,pos_filter,variation=object@test,depth=depth)
+	control_fil <- do.call(rbind,control_fil)
+	test_fil <- do.call(rbind,test_fil)
+	object@control <- control_fil
+	object@test <- test_fil
+	return(object)
+}
+setMethod("regions_filter",signature="PositionSet",.regions_filter)
+
+
+#' mean_sd function
+#' This function creates a ControlCompareSet when control slot has info.	
+#' 
+#' @param object
+#' @param samples
+#' @keywords mean
+#' @export
+#' @examples
+#' mean_sd(object)
+.mean_sd <- function(object,position,samples,nucleotide){
+
+}
+setMethod("mean_sd",signature="PositionSet",.mean_sd)
+
+
 #' Graph_barerror function
 #'
 #' This function allows you to draw a a bar graph showing frequency error per position.
@@ -89,7 +148,7 @@ setMethod("dim","PositionSet",
 #' @param depth filter
 #' @param samples to print
 #' @param frequency zoom
-#' @keywords 
+#' @keywords barerror
 #' @export
 #' @examples
 #' graph_barerror()
@@ -110,44 +169,63 @@ setMethod("dim","PositionSet",
 } 
 setMethod("graph_barerror",signature="PositionSet",.graph_barerror)
 
-#' mean_sd function
+
+
+############
+### Accession methods
+############
+
+
+#' get_control function
 #'
-#' This function allows you to express your love of cats.
-#' @param love Do you love cats? Defaults to TRUE.
-#' @keywords cats
+#' Accesion function to control dataframe
+#' @param object
+#' @keywords control variation
 #' @export
 #' @examples
-#' mean_sd()
-.mean_sd <- function(object,position,samples,nucleotide){
-
-}
-
-setMethod("mean_sd",signature="PositionSet",.mean_sd)
-
-#' get_variation function
-#'
-#' This function allows you to express your love of cats.
-#' @param love Do you love cats? Defaults to TRUE.
-#' @keywords cats
-#' @export
-#' @examples
-#' get_variation()
-.get_variation <- function(object){
-	v <- object@variation
+#' get_test(object)
+.get_control <- function(object){
+	v <- object@control
 	v
 }
-setMethod("get_variation",signature="PositionSet",.get_variation)
+setMethod("get_control",signature="PositionSet",.get_control)
 
-#' get_sample function
+#' get_test function
 #'
-#' This function allows you to express your love of cats.
-#' @param love Do you love cats? Defaults to TRUE.
-#' @keywords cats
+#' Accesion function to test dataframe
+#' @param object
+#' @keywords test variation
 #' @export
 #' @examples
-#' get_sample()
+#' get_variation(object)
+.get_test <- function(object){
+	v <- object@test
+	v
+}
+setMethod("get_test",signature="PositionSet",.get_test)
+
+#' get_samples function
+#'
+#' Accession function for samples
+#' @keywords sample
+#' @export
+#' @examples
+#' get_samples(object)
 .get_samples <- function(object){
 	s <- object@samples
 	s
 }
 setMethod("get_samples",signature="PositionSet",.get_samples)
+
+#' get_regions function
+#'
+#' Accession function for regions
+#' @keywords regions
+#' @export
+#' @examples
+#' get_regions(object)
+.get_regions <- function(object){
+	s <- object@regions
+	s
+}
+setMethod("get_regions",signature="PositionSet",.get_regions)

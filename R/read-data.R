@@ -22,14 +22,14 @@ read_targets <- function(file="targets.txt"){
 	return(t)
 }
 
-#' read_targets() function
+#' read_regions() function
 #'
-#' This function reads targets file
-#' @param targets file
-#' @keywords targets
+#' This function reads regions file
+#' @param regions file
+#' @keywords regions
 #' @export
 #' @examples
-#' read_targets(file="targets.txt")
+#' read_targets(file="regions.bed")
 read_regions <- function(file="regions.bed"){
 	r <- read.table(file,sep="\t")
 	colnames(r) <- c("chr","start","end","name","strand")
@@ -39,18 +39,18 @@ read_regions <- function(file="regions.bed"){
 	return(r)
 }
 
-#' read_targets() function
+#' create_position_set() function
 #'
-#' This function reads targets file
-#' @param targets file
-#' @keywords targets
+#' This function uses targets, regions and polymorphism info and creates a PositionSet instance
+#' @param regions bed file
+#' @keywords PositionSet instance
 #' @export
 #' @examples
-#' read_targets(file="targets.txt")
+#' create_position_set(targets,regions,polymorphisms)
 create_position_set <- function(targets=data.frame(),regions=data.frame(),polymorphisms=data.frame()){
 
-	control <- apply(as.matrix(targets$filename[targets$ControlTest == "CONTROL"]),1,read_data)
-	test <- apply(as.matrix(targets$filename[targets$ControlTest == "TEST"]),1,read_data)
+	control <- apply(as.matrix(targets[targets$ControlTest == "CONTROL",]),1,read_data)
+	test <- apply(as.matrix(targets[targets$ControlTest == "TEST",]),1,read_data)
 	control <- do.call(rbind,control)
 	test <- do.call(rbind,test)
 
@@ -58,7 +58,8 @@ create_position_set <- function(targets=data.frame(),regions=data.frame(),polymo
 	return(position_set)
 }
 
-read_data <- function(file){
-	f <- read.table(file,header=T,sep="\t")
+read_data <- function(targ){
+	f <- read.table(targ["filename"],header=T,sep="\t")
+	f$sample <- targ["Sample"]
 	return(f)
 }
