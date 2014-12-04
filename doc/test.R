@@ -113,10 +113,10 @@ dev.off()
 
 ################################################
 ### PRUEBA Octubre 2014
-################################################
+############ ####################################
 
 library(pampuCaller)
 targets <- read_targets()
 regions <- read_regions("amplicones.bed")
 position_set <- create_position_set(targets,regions) 
-regions_filter(position_set)
+position_set_filt <- regions_filter(position_set,depth=1000)

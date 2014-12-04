@@ -89,6 +89,7 @@ setMethod("dim","PositionSet",
 #' 
 #' @param object
 #' @param depth
+
 #' @param calling c(control,filter)
 #' @keywords region filter
 #' @export
@@ -97,7 +98,9 @@ setMethod("dim","PositionSet",
 .calling_prep <- function(object,depth=20,calling="control"){
 	if(calling == "control"){
 		object <- regions_filter(object)
-		object <- mean_sd(object)
+		control_mean <- mean_sd(object)
+		compare_control_set <- new("CompareControlSet",meanControl=control_mean,test=object@test,samples=object@samples,regions=object@regions,polymorphisms=object@polymorphisms)
+	return(compare_control_set)
 
 	}else if(calling == "filter"){
 
@@ -135,8 +138,10 @@ setMethod("regions_filter",signature="PositionSet",.regions_filter)
 #' @export
 #' @examples
 #' mean_sd(object)
-.mean_sd <- function(object,position,samples,nucleotide){
-
+.mean_sd <- function(object,position=NULL,samples=NULL,nucleotide=NULL){
+	data <- object@control
+	control_mean <- ddply(data,.(POS),summarize,num_samples=length(sample),mean_per_A=mean(per_A),sd_per_A=sd(per_A),mean_per_C=mean(per_C),sd_per_C=sd(per_C),mean_per_T=mean(per_T),sd_per_T=sd(per_T),mean_per_G=mean(per_G),sd_per_G=sd(per_G))
+	return(control_mean)
 }
 setMethod("mean_sd",signature="PositionSet",.mean_sd)
 

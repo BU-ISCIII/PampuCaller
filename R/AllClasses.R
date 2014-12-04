@@ -17,3 +17,19 @@ setClass("PositionSet",
 					   samples = "data.frame"
 						)
 		)
+
+setClass("ControlCompareSet",
+		representation(meanControl = "data.frame",
+					   test="data.frame",
+					   regions = "data.frame",
+					   polymorphisms = "data.frame",
+					   samples = "data.frame"
+						)
+		)
+
+setClass("VariationSet",
+		representation(variants="data.frame",
+					   samples = "data.frame",
+					   Annotation = "data.frame"
+						)
+		)
