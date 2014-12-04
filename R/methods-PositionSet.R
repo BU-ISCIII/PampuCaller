@@ -36,20 +36,6 @@ setMethod("initialize","PositionSet",
 			}
 )	
 
-calc_depth <- function(variation){
-	variation$depth <- variation$A + variation$a + variation$C + 
-									   + variation$c + variation$T + variation$t + variation$G + variation$g + variation$DEL + variation$INS
-	variation
-}
-
-calc_freq <- function(variation){
-	variation$per_A <- (variation$A + variation$a)/variation$depth
-	variation$per_C <- (variation$C + variation$c)/variation$depth
-	variation$per_T <- (variation$T + variation$t)/variation$depth
-	variation$per_G <- (variation$G + variation$g)/variation$depth
-	variation		
-}
-
 #######
 ## Class Validation
 #########
@@ -99,7 +85,7 @@ setMethod("dim","PositionSet",
 	if(calling == "control"){
 		object <- regions_filter(object)
 		control_mean <- mean_sd(object)
-		compare_control_set <- new("CompareControlSet",meanControl=control_mean,test=object@test,samples=object@samples,regions=object@regions,polymorphisms=object@polymorphisms)
+		compare_control_set <- new("ControlCompareSet",meanControl=control_mean,test=object@test,samples=object@samples,regions=object@regions,polymorphisms=object@polymorphisms)
 	return(compare_control_set)
 
 	}else if(calling == "filter"){
