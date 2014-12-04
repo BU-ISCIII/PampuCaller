@@ -126,41 +126,10 @@ setMethod("regions_filter",signature="PositionSet",.regions_filter)
 #' mean_sd(object)
 .mean_sd <- function(object,position=NULL,samples=NULL,nucleotide=NULL){
 	data <- object@control
-	control_mean <- ddply(data,.(POS),summarize,num_samples=length(sample),mean_per_A=mean(per_A),sd_per_A=sd(per_A),mean_per_C=mean(per_C),sd_per_C=sd(per_C),mean_per_T=mean(per_T),sd_per_T=sd(per_T),mean_per_G=mean(per_G),sd_per_G=sd(per_G))
+	control_mean <- ddply(data,.(POS),summarize,num_samples=length(sample),depth=mean(depth),mean_per_A=mean(per_A),sd_per_A=sd(per_A),mean_per_C=mean(per_C),sd_per_C=sd(per_C),mean_per_T=mean(per_T),sd_per_T=sd(per_T),mean_per_G=mean(per_G),sd_per_G=sd(per_G))
 	return(control_mean)
 }
 setMethod("mean_sd",signature="PositionSet",.mean_sd)
-
-
-#' Graph_barerror function
-#'
-#' This function allows you to draw a a bar graph showing frequency error per position.
-#' @param PositionSet Object.
-#' @param depth filter
-#' @param samples to print
-#' @param frequency zoom
-#' @keywords barerror
-#' @export
-#' @examples
-#' graph_barerror()
-.graph_barerror <- function(object,depth,samples=object@samples$sample,zoom,...){
-	var <- get_variation(object)
-	var <- var[var$depth > depth & var$sample %in% samples,]
-	var_ggplot <- melt(var,id.vars=c('sample','POS'), measure.vars=c('per_A','per_G','per_T','per_C'))
-
-	g <-ggplot(var_ggplot, aes(POS,value, fill=variable)) +
- 		geom_bar(stat="identity",position="dodge") + 
- 		ylim(zoom) +
- 		theme_bw() + 
- 		theme(axis.text.x = element_text(size = 5.5,angle=75, vjust=0.5), strip.text.x = element_text(size=6.5)) + 
- 		scale_fill_manual(values=cbPalette) + 
- 		labs(title="Amplicon Position Error", x="POS",y="Alt Freq",legend="Nucleotide percentage") +
- 		facet_wrap(~sample)
-	g
-} 
-setMethod("graph_barerror",signature="PositionSet",.graph_barerror)
-
-
 
 ############
 ### Accession methods

@@ -119,10 +119,59 @@ library(pampuCaller)
 targets <- read_targets()
 regions <- read_regions("amplicones.bed")
 position_set <- create_position_set(targets,regions) 
-compare_control_set <- calling_prep(position_set)
+compare_control_set <- calling_prep(position_set,depth=1000)
+
+
+## TODO
+recorrer_amplicones <- function(reg,dir){
+	control <- samples[grep("IMR90.*REP1",samples$sample,perl=T),]
+	control_m <- do.call(rbind,strsplit(as.character(control),"_"))
+
+	apply(control_m,1,draw_graph,samples=samples,pattern=pattern_control,dir)
+}
+
+draw_graph <- function(exon,samples,pattern_control,dir){
+		print(paste("Graph",exon[2]))
+		name_c <- samples[grep(paste(pattern_control,".*",exon[2],sep=""),samples$sample,perl=T),]
+		name <- samples[grep(paste("[^",pattern_control,"]_",exon[2],sep=""),samples$sample,perl=T),]
+
+		dir <- paste(dir,"/",exon[2],sep="")
+
+		dir.create(dir)
+
+		pdf(paste(dir,"/",exon[2],"_zoom_0.015",sep=""),width=40)
+		print(graph_barerror(variants_o,10000,name_c,zoom=c(0,0.015)))
+	    print(graph_barerror(variants_o,10000,name,zoom=c(0,0.015)))
+		dev.off()
+
+		pdf(paste(dir,"/",exon[2],"_zoom_0.008",sep=""),width=40)
+		print(graph_barerror(variants_o,10000,name_c,zoom=c(0,0.008)))
+	    print(graph_barerror(variants_o,10000,name,zoom=c(0,0.008)))
+		dev.off()
+
+		pdf(paste(dir,"/",exon[2],"_zoom_0.5",sep=""),width=40)
+		print(graph_barerror(variants_o,10000,name_c,zoom=c(0,0.5)))
+	    print(graph_barerror(variants_o,10000,name,zoom=c(0,0.5)))
+		dev.off()
+
+		pdf(paste(dir,"/",exon[2],"zoom_0.25",sep=""),width=40)
+		print(graph_barerror(variants_o,10000,name_c,zoom=c(0,0.25)))
+	    print(graph_barerror(variants_o,10000,name,zoom=c(0,0.25)))
+		dev.off()
+	}
+
 
 
 ## Test
 position_set_filt <- regions_filter(position_set,depth=1000)
 pfc <- get_control(position_set_filt)
 a <- mean_sd(position_set_filt)
+
+start_end <- get_regions(compare_control_set)[12,]
+depth <- 0
+zoom <- c(0,0.008)
+samples <- compare_control_set@samples$Sample
+var <- get_test(compare_control_set)
+var_c <- get_control(compare_control_set)
+
+l <- graph_barerror(compare_control_set,start_end=start_end,zoom=c(0,0.008))

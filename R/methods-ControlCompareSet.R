@@ -73,12 +73,28 @@ setMethod("dim","ControlCompareSet",
 #' @export
 #' @examples
 #' graph_barerror()
-.graph_barerror <- function(object,depth,samples=object@samples$sample,zoom,...){
-	var <- get_variation(object)
-	var <- var[var$depth > depth & var$sample %in% samples,]
+.graph_barerror <- function(object,samples=object@samples$Sample,depth=0,start_end=NULL,zoom,...){
+	cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+	brewer_qualitative <- c("#0000ff","#ff0000","#483215","#008900","#7244c4","#e65a11","#000000","#e6e528","#ff00ee","#6e0000","#00c7dd","#d4b455","#8f008d","#736b00","#7d8cbf")
+
+	var <- get_test(object)
+	var <- var[var$sample %in% samples,]
+	var <- pos_filter(var,start_end,depth)
 	var_ggplot <- melt(var,id.vars=c('sample','POS'), measure.vars=c('per_A','per_G','per_T','per_C'))
 
-	g <-ggplot(var_ggplot, aes(POS,value, fill=variable)) +
+	var_c <- get_control(object)
+	var_c <- pos_filter(var_c,start_end,depth)
+	var_c_ggplot <- melt(var_c,id.vars=c('POS'), measure.vars=c('mean_per_A','mean_per_G','mean_per_T','mean_per_C'))
+
+	g_c <-ggplot(var_c_ggplot, aes(POS,value, fill=variable)) +
+ 		geom_bar(stat="identity",position="dodge") + 
+ 		ylim(zoom) +
+ 		theme_bw() + 
+ 		theme(axis.text.x = element_text(size = 5.5,angle=75, vjust=0.5), strip.text.x = element_text(size=6.5)) + 
+ 		scale_fill_manual(values=cbPalette) + 
+ 		labs(title="Amplicon Position Error", x="POS",y="Alt Freq",legend="Nucleotide percentage")
+
+	g_t <-ggplot(var_ggplot, aes(POS,value, fill=variable)) +
  		geom_bar(stat="identity",position="dodge") + 
  		ylim(zoom) +
  		theme_bw() + 
@@ -86,9 +102,10 @@ setMethod("dim","ControlCompareSet",
  		scale_fill_manual(values=cbPalette) + 
  		labs(title="Amplicon Position Error", x="POS",y="Alt Freq",legend="Nucleotide percentage") +
  		facet_wrap(~sample)
-	g
+	return(list(g_c,g_t))
+
 } 
-setMethod("graph_barerror",signature="PositionSet",.graph_barerror)
+setMethod("graph_barerror",signature="ControlCompareSet",.graph_barerror)
 
 
 ############

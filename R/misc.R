@@ -6,6 +6,12 @@
 # date: october 2014
 ###############################################################################
 
+## Graphs palettes
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+brewer_qualitative <- c("#0000ff","#ff0000","#483215","#008900","#7244c4","#e65a11","#000000","#e6e528","#ff00ee","#6e0000","#00c7dd","#d4b455","#8f008d","#736b00","#7d8cbf")
+
+
 #' calc_depth function
 #'
 #' This function calculates depth from variation dataframe. It needs raw read counts in columns named as A,C,G,T for forward reads
@@ -48,6 +54,6 @@ calc_freq <- function(variation){
 pos_filter <- function(variation,start_end,depth){
 	
 	variation <- variation[variation$POS >= as.numeric(start_end[2]) & variation$POS <= as.numeric(start_end[3]),]	
-	variation <- variation[variation$depth >= depth,]
+	variation <- variation[variation$depth >= as.numeric(depth),]
 	variation
 }
