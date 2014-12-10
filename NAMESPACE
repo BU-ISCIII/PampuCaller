@@ -17,3 +17,4 @@ export(read_targets)
 
 ## think about it
 export(regions_filter)
+export(pos_filter)

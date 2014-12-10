@@ -83,7 +83,7 @@ setMethod("dim","PositionSet",
 #' region_filter(object)
 .calling_prep <- function(object,depth=20,calling="control"){
 	if(calling == "control"){
-		object <- regions_filter(object)
+		object <- regions_filter(object,depth=depth)
 		control_mean <- mean_sd(object)
 		compare_control_set <- new("ControlCompareSet",meanControl=control_mean,test=object@test,samples=object@samples,regions=object@regions,polymorphisms=object@polymorphisms)
 	return(compare_control_set)
