@@ -20,11 +20,15 @@ setMethod("initialize","PositionSet",
 					... ){		
 
 					#Calc precomputations
-					control <- calc_depth(control)
-					control <- calc_freq(control)
+					if(nrow(control) != 0 ){
+						control <- calc_depth(control)
+						control <- calc_freq(control)
+					}
 
-					test <- calc_depth(test)
-					test <- calc_freq(test)
+					if(nrow(test) != 0){
+						test <- calc_depth(test)
+						test <- calc_freq(test)
+					}
 
 					#Initialize object
 					.Object@control <- control

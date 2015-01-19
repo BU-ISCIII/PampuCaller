@@ -49,11 +49,21 @@ read_regions <- function(file="regions.bed"){
 #' create_position_set(targets,regions,polymorphisms)
 create_position_set <- function(targets=data.frame(),regions=data.frame(),polymorphisms=data.frame()){
 
-	control <- apply(as.matrix(targets[targets$ControlTest == "CONTROL",]),1,read_data)
-	test <- apply(as.matrix(targets[targets$ControlTest == "TEST",]),1,read_data)
-	control <- do.call(rbind,control)
-	test <- do.call(rbind,test)
-
+	if(nrow(targets[targets$ControlTest == "CONTROL",]) != 0){
+		control <- apply(as.matrix(targets[targets$ControlTest == "CONTROL",]),1,read_data)
+		control <- do.call(rbind,control)
+	}else{
+		print("No Control data available.\n")	
+		control <- data.frame()  
+	}
+	if(nrow(targets[targets$ControlTest == "TEST",]) != 0){
+		test <- apply(as.matrix(targets[targets$ControlTest == "TEST",]),1,read_data)
+		test <- do.call(rbind,test)
+	}else{
+		print("No Test data available")
+		test <- data.frame()
+	}
+	
 	position_set <- new("PositionSet",control=control,test=test,samples=targets,regions=regions,polymorphisms=polymorphisms)
 	return(position_set)
 }
