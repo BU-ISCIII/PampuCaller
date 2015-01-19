@@ -23,7 +23,19 @@ brewer_qualitative <- c("#0000ff","#ff0000","#483215","#008900","#7244c4","#e65a
 #' calc_depth(data.frame)
 calc_depth <- function(variation){
 	variation$depth <- variation$A + variation$a + variation$C + 
-									   + variation$c + variation$T + variation$t + variation$G + variation$g + variation$DEL + variation$INS
+									   + variation$c + variation$T + variation$t + variation$G + variation$g
+	
+	## Calc all nt totals
+	variation$total_A <- (variation$A + variation$a)
+	variation$total_C <- (variation$C + variation$c)
+	variation$total_T <- (variation$T + variation$t)
+	variation$total_G <- (variation$G + variation$g)
+
+	## TODO Not counting indels forward and reverse separated.
+	variation$forward_reads <- variation$A + variation$C + variation$T + variation$G 
+	variation$reverse_reads <- variation$a + variation$c + variation$t + variation$g
+	variation$per_forward_reads <- variation$forward_reads/variation$depth
+	variation$per_reverse_reads <- variation$reverse_reads/variation$depth
 	variation
 }
 
@@ -37,10 +49,22 @@ calc_depth <- function(variation){
 #' @examples
 #' graph_barerror()
 calc_freq <- function(variation){
-	variation$per_A <- (variation$A + variation$a)/variation$depth
-	variation$per_C <- (variation$C + variation$c)/variation$depth
-	variation$per_T <- (variation$T + variation$t)/variation$depth
-	variation$per_G <- (variation$G + variation$g)/variation$depth
+	# Forward freq per nt
+	variation$per_A <- (variation$A)/variation$depth
+	variation$per_C <- (variation$C)/variation$depth
+	variation$per_T <- (variation$T)/variation$depth
+	variation$per_G <- (variation$G)/variation$depth
+	# Reverse freq per nt
+	variation$per_a <- (variation$a)/variation$depth
+	variation$per_c <- (variation$c)/variation$depth
+	variation$per_t <- (variation$t)/variation$depth
+	variation$per_g <- (variation$g)/variation$depth
+
+	# Total freq per nt
+	variation$per_total_A <- (variation$A + variation$a)/variation$depth
+	variation$per_total_C <- (variation$C + variation$c)/variation$depth
+	variation$per_total_T <- (variation$T + variation$t)/variation$depth
+	variation$per_total_G <- (variation$G + variation$g)/variation$depth
 	variation		
 }
 

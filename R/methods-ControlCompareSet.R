@@ -87,7 +87,7 @@ setMethod("dim","ControlCompareSet",
 		mean_depth <- mean(var$depth)
 		var_ggplot <- melt(var,id.vars=c('sample','POS'), measure.vars=c('per_A','per_G','per_T','per_C'))
 		g_t <-ggplot(var_ggplot, aes(POS,value, fill=variable)) +
- 			geom_bar(stat="identity",position="dodge") + 
+ 			geom_bar(stat="identity") + 
  			ylim(zoom) +
  			theme_bw() + 
  			theme(axis.text.x = element_text(size = 5.5,angle=75, vjust=0.5), strip.text.x = element_text(size=6.5)) + 
@@ -103,7 +103,7 @@ setMethod("dim","ControlCompareSet",
 		mean_c_depth <- mean(var_c$depth)
 		mean_c_num_samples <- mean(var_c$num_samples)
 		g_c <-ggplot(var_c_ggplot, aes(POS,value, fill=variable)) +
- 			geom_bar(stat="identity",position="dodge") + 
+ 			geom_bar(stat="identity") + 
  			ylim(zoom) +
  			theme_bw() + 
  			theme(axis.text.x = element_text(size = 5.5,angle=75, vjust=0.5), strip.text.x = element_text(size=6.5)) + 
