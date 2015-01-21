@@ -49,6 +49,12 @@ draw_graph <- function(reg,dir,set){
 			print(g[[1]])
 			print(g[[2]])
 		dev.off()
+
+		g <- graph_barerror(set,start_end=reg,zoom=c(0,1))
+		pdf(paste(dir,"/",reg[4],"zoom_1.0",sep=""),width=40)
+			print(g[[1]])
+			print(g[[2]])
+		dev.off()
 }
 
 

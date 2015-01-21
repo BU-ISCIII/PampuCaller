@@ -85,7 +85,7 @@ setMethod("dim","ControlCompareSet",
 
 	if(nrow(var) != 0){
 		mean_depth <- mean(var$depth)
-		var_ggplot <- melt(var,id.vars=c('sample','POS'), measure.vars=c('per_A','per_G','per_T','per_C'))
+		var_ggplot <- melt(var,id.vars=c('sample','POS'), measure.vars=c('per_total_A','per_total_G','per_total_T','per_total_C'))
 		g_t <-ggplot(var_ggplot, aes(POS,value, fill=variable)) +
  			geom_bar(stat="identity") + 
  			ylim(zoom) +
