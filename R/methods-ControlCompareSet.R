@@ -85,16 +85,18 @@ setMethod("dim","ControlCompareSet",
 
 	if(nrow(var) != 0){
 		mean_depth <- mean(var$depth)
-		var_ggplot <- melt(var,id.vars=c('sample','POS'), measure.vars=c('per_total_A','per_total_G','per_total_T','per_total_C'))
+		var_ggplot <- melt(var,id.vars=c('sample','POS','REF'), measure.vars=c('per_total_A','per_total_G','per_total_T','per_total_C'))
 		g_t <-ggplot(var_ggplot, aes(POS,value, fill=variable)) +
  			geom_bar(stat="identity") + 
- 			ylim(zoom) +
  			theme_bw() + 
  			theme(axis.text.x = element_text(size = 5.5,angle=75, vjust=0.5), strip.text.x = element_text(size=6.5)) + 
  			scale_fill_manual(values=cbPalette) + 
+ 			scale_x_continuous(breaks=var$POS,labels=var$REF) +
+ 			ylim(zoom) +
  			labs(title="Amplicon Position Error", x="POS",y="Alt Freq",legend="Nucleotide percentage") +
- 			facet_wrap(~sample)
+ 			facet_wrap(~sample,scales="free")
  	}
+ 	 			
 
 	var_c <- get_control(object)
 	var_c <- pos_filter(var_c,start_end,depth)
@@ -106,6 +108,7 @@ setMethod("dim","ControlCompareSet",
  			geom_bar(stat="identity") + 
  			ylim(zoom) +
  			theme_bw() + 
+ 			scale_x_continuous(breaks=var$POS,labels=var$REF) +
  			theme(axis.text.x = element_text(size = 5.5,angle=75, vjust=0.5), strip.text.x = element_text(size=6.5)) + 
  			scale_fill_manual(values=cbPalette) + 
  			labs(title=paste("Amplicon Position Error. Mean position depth: ",mean_c_depth,". Mean sample number per position: ",mean_c_num_samples,sep=""), x="POS",y="Alt Freq",legend="Nucleotide percentage")
