@@ -130,7 +130,51 @@ setMethod("regions_filter",signature="PositionSet",.regions_filter)
 #' mean_sd(object)
 .mean_sd <- function(object,position=NULL,samples=NULL,nucleotide=NULL){
 	data <- object@control
-	control_mean <- ddply(data,.(POS),summarize,num_samples=length(sample),depth=mean(depth),mean_per_A=mean(per_A),sd_per_A=sd(per_A),mean_per_C=mean(per_C),sd_per_C=sd(per_C),mean_per_T=mean(per_T),sd_per_T=sd(per_T),mean_per_G=mean(per_G),sd_per_G=sd(per_G))
+
+	control_mean <- ddply(data,.(POS),function(x){
+			ref <- x$REF[1]
+			num_samples<-length(x$sample)
+			depth<-mean(x$depth)
+			mean_per_A<-mean(x$per_A)
+			sd_per_A<-sd(x$per_A)
+			cv_per_A<- sd_per_A/mean_per_A
+			mean_per_C<-mean(x$per_C)
+			sd_per_C<-sd(x$per_C)
+			cv_per_C<- sd_per_C/mean_per_C
+			mean_per_T<-mean(x$per_T)
+			sd_per_T<-sd(x$per_T)
+			cv_per_T<- sd_per_T/mean_per_T
+			mean_per_G<-mean(x$per_G)
+			sd_per_G<-sd(x$per_G)
+			cv_per_G<- sd_per_G/mean_per_G
+			mean_per_a<-mean(x$per_a)
+			sd_per_a<-sd(x$per_a)
+			cv_per_a<- sd_per_a/mean_per_a
+			mean_per_c<-mean(x$per_c)
+			sd_per_c<-sd(x$per_c)
+			cv_per_c<- sd_per_c/mean_per_c
+			mean_per_t<-mean(x$per_t)
+			sd_per_t<-sd(x$per_t)
+			cv_per_t<- sd_per_t/mean_per_t
+			mean_per_g<-mean(x$per_g)
+			sd_per_g<-sd(x$per_g)
+			cv_per_g<- sd_per_g/mean_per_g
+			mean_per_total_A<-mean(x$per_total_A)
+			sd_per_total_A<-sd(x$per_total_A)
+			cv_per_total_A <- sd_per_total_A/mean_per_total_A
+			mean_per_total_C<-mean(x$per_total_C)
+			sd_per_total_C<-sd(x$per_total_C)
+			cv_per_total_C <- sd_per_total_C/mean_per_total_C
+			mean_per_total_T<-mean(x$per_total_T)
+			sd_per_total_T<-sd(x$per_total_T)
+			cv_per_total_T <- sd_per_total_T/mean_per_total_T
+			mean_per_total_G<-mean(x$per_total_G)
+			sd_per_total_G<-sd(x$per_total_G)
+			cv_per_total_G <- sd_per_total_G/mean_per_total_G
+			data.frame(ref=ref,num_samples=num_samples,depth=depth,mean_per_A=mean_per_A,sd_per_A=sd_per_A,cv_per_A=cv_per_A,mean_per_C=mean_per_C,sd_per_C=sd_per_C,cv_per_C=cv_per_C,mean_per_T=mean_per_T,sd_per_T=sd_per_T,cv_per_T=cv_per_T,mean_per_G=mean_per_G,sd_per_G=sd_per_G,cv_per_G=cv_per_G,
+				mean_per_a=mean_per_a,sd_per_a=sd_per_a,cv_per_a=cv_per_a,mean_per_c=mean_per_c,sd_per_c=sd_per_c,cv_per_c=cv_per_c,mean_per_t=mean_per_t,sd_per_t=sd_per_t,cv_per_t=cv_per_t,mean_per_g=mean_per_g,sd_per_g=sd_per_g,cv_per_g=cv_per_g,
+				mean_per_total_A=mean_per_total_A,sd_per_total_A=sd_per_total_A,cv_per_total_A=cv_per_total_A,mean_per_total_C=mean_per_total_C,sd_per_total_C=sd_per_total_C,cv_per_total_C=cv_per_total_C,mean_per_total_T=mean_per_total_T,sd_per_total_T=sd_per_t,cv_per_total_T=cv_per_total_T,mean_per_total_G=mean_per_total_G,sd_per_total_G=sd_per_total_G,cv_per_total_G=cv_per_total_G)
+	})
 	return(control_mean)
 }
 setMethod("mean_sd",signature="PositionSet",.mean_sd)
