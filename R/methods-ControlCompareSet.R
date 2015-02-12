@@ -117,6 +117,23 @@ setMethod("dim","ControlCompareSet",
 } 
 setMethod("graph_barerror",signature="ControlCompareSet",.graph_barerror)
 
+.calling_variants <- function(object,min_freq,samples=object@samples$Sample,method="test_1"){
+
+	control <- get_control(object)
+	case <- get_test(object)
+
+	# Select samples
+	case <- case[case$sample %in% samples,]
+
+	# 
+	if(method == "test_1"){
+		variants <- apply(as.matrix(case),1,pampu_caller_test_1,control=as.matrix(control),min_freq=min_freq)
+		variants_set <- new("VariantSet",variants=variants)
+		return(variants_set)
+	}
+
+}
+setMethod("calling_variants",signature="ControlCompareSet",.calling_variants)
 
 ############
 ### Accession methods

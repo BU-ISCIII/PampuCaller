@@ -29,7 +29,6 @@ setClass("ControlCompareSet",
 
 setClass("VariationSet",
 		representation(variants="data.frame",
-					   samples = "data.frame",
-					   Annotation = "data.frame"
+					   annotation = "data.frame"
 						)
 		)

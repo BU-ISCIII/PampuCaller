@@ -9,6 +9,7 @@ export(get_regions)
 export(calling_prep)
 export(graph_barerror)
 export(mean_sd)
+export(calling_variants)
 
 ##read_data
 export(create_position_set)
@@ -18,3 +19,4 @@ export(read_targets)
 ## think about it
 export(regions_filter)
 export(pos_filter)
+export(pampu_caller_test_1)

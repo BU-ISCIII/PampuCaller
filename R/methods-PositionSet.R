@@ -162,18 +162,22 @@ setMethod("regions_filter",signature="PositionSet",.regions_filter)
 			mean_per_total_A<-mean(x$per_total_A)
 			sd_per_total_A<-sd(x$per_total_A)
 			cv_per_total_A <- sd_per_total_A/mean_per_total_A
+			forward_reverse_A <- mean(x$A)/mean(x$a)
 			mean_per_total_C<-mean(x$per_total_C)
 			sd_per_total_C<-sd(x$per_total_C)
 			cv_per_total_C <- sd_per_total_C/mean_per_total_C
+			forward_reverse_C <- mean(x$C)/mean(x$c)
 			mean_per_total_T<-mean(x$per_total_T)
 			sd_per_total_T<-sd(x$per_total_T)
 			cv_per_total_T <- sd_per_total_T/mean_per_total_T
+			forward_reverse_T <- mean(x$T)/mean(x$t)
 			mean_per_total_G<-mean(x$per_total_G)
 			sd_per_total_G<-sd(x$per_total_G)
 			cv_per_total_G <- sd_per_total_G/mean_per_total_G
+			forward_reverse_G <- mean(x$G)/mean(x$g)
 			data.frame(ref=ref,num_samples=num_samples,depth=depth,mean_per_A=mean_per_A,sd_per_A=sd_per_A,cv_per_A=cv_per_A,mean_per_C=mean_per_C,sd_per_C=sd_per_C,cv_per_C=cv_per_C,mean_per_T=mean_per_T,sd_per_T=sd_per_T,cv_per_T=cv_per_T,mean_per_G=mean_per_G,sd_per_G=sd_per_G,cv_per_G=cv_per_G,
 				mean_per_a=mean_per_a,sd_per_a=sd_per_a,cv_per_a=cv_per_a,mean_per_c=mean_per_c,sd_per_c=sd_per_c,cv_per_c=cv_per_c,mean_per_t=mean_per_t,sd_per_t=sd_per_t,cv_per_t=cv_per_t,mean_per_g=mean_per_g,sd_per_g=sd_per_g,cv_per_g=cv_per_g,
-				mean_per_total_A=mean_per_total_A,sd_per_total_A=sd_per_total_A,cv_per_total_A=cv_per_total_A,mean_per_total_C=mean_per_total_C,sd_per_total_C=sd_per_total_C,cv_per_total_C=cv_per_total_C,mean_per_total_T=mean_per_total_T,sd_per_total_T=sd_per_t,cv_per_total_T=cv_per_total_T,mean_per_total_G=mean_per_total_G,sd_per_total_G=sd_per_total_G,cv_per_total_G=cv_per_total_G)
+				mean_per_total_A=mean_per_total_A,sd_per_total_A=sd_per_total_A,cv_per_total_A=cv_per_total_A,forward_reverse_A=forward_reverse_A,mean_per_total_C=mean_per_total_C,sd_per_total_C=sd_per_total_C,cv_per_total_C=cv_per_total_C,forward_reverse_C=forward_reverse_C,mean_per_total_T=mean_per_total_T,sd_per_total_T=sd_per_t,cv_per_total_T=cv_per_total_T,forward_reverse_T=forward_reverse_T,mean_per_total_G=mean_per_total_G,sd_per_total_G=sd_per_total_G,cv_per_total_G=cv_per_total_G,forward_reverse_G=forward_reverse_G)
 	})
 	return(control_mean)
 }
