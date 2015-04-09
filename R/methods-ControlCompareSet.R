@@ -88,6 +88,7 @@ setMethod("dim","ControlCompareSet",
 		var_ggplot <- melt(var,id.vars=c('sample','POS','REF'), measure.vars=c('per_total_A','per_total_G','per_total_T','per_total_C'))
 		g_t <-ggplot(var_ggplot, aes(POS,value, fill=variable)) +
  			geom_bar(stat="identity") + 
+ 			ylim(zoom) +
  			theme_bw() + 
  			theme(axis.text.x = element_text(size = 5.5,angle=75, vjust=0.5), strip.text.x = element_text(size=6.5)) + 
  			scale_fill_manual(values=cbPalette) + 
