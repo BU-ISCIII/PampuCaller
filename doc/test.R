@@ -79,10 +79,16 @@ var_c <- get_control(compare_control_set)
 l <- graph_barerror(compare_control_set,start_end=start_end,zoom=c(0,0.008))
 
 ## Obtain data from specific mutations.
-mut <- read.table("mutations_validation.txt",sep="\t",header=T)
-mut$merge <- paste(mut$library,"_",mut$pos,sep="")
+mut <- targets
+mut$merge <- paste(mut$Sample,"_",mut$pos,sep="")
 test <- get_test(position_set)
-test_validation <- test[test$POS %in% mut$pos,]
-test_validation$merge <- paste(test_validation$sample,"_",test_validation$POS,sep="")
-merge_mut_validation <- merge(mut,test_validation,by.x="pos",by.y="POS")
+test$merge <- paste(test$sample,"_",test$POS,sep="")
+test_validation <- test[test$merge %in% mut$merge,]
+merge_mut_validation <- merge(mut,test_validation,by="merge")
 write.table(merge_mut_validation,file="mutations_validation_deepseq.txt",row.names=F,sep="\t")
+
+
+test <- get_test(compare_control_set)
+control <- get_control(compare_control_set)
+x <- test[test$POS == 156713 & test$sample=="3543_rep1",]
+p <- apply(x,1,pampu_caller_test_1,control=control,times=10)

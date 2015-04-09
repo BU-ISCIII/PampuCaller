@@ -127,7 +127,7 @@ setMethod("graph_barerror",signature="ControlCompareSet",.graph_barerror)
 
 	# 
 	if(method == "test_1"){
-		variants <- apply(as.matrix(case),1,pampu_caller_test_1,control=as.matrix(control),min_freq=min_freq)
+		variants <- apply(case,1,pampu_caller_test_1,control=control,times=10)
 		variants_set <- new("VariantSet",variants=variants)
 		return(variants_set)
 	}

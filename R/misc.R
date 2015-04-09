@@ -22,8 +22,7 @@ brewer_qualitative <- c("#0000ff","#ff0000","#483215","#008900","#7244c4","#e65a
 #' @examples
 #' calc_depth(data.frame)
 calc_depth <- function(variation){
-	variation$depth <- variation$A + variation$a + variation$C + 
-									   + variation$c + variation$T + variation$t + variation$G + variation$g
+	variation$depth <- variation$A + variation$a + variation$C + variation$c + variation$T + variation$t + variation$G + variation$g
 	
 	## Calc all nt totals
 	variation$total_A <- (variation$A + variation$a)
