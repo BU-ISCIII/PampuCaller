@@ -11,6 +11,7 @@ targets <- read_targets()
 regions <- read_regions("amplicones.bed")
 position_set <- create_position_set(targets,regions) 
 compare_control_set <- calling_prep(position_set,depth=100)
+p <- c(2114,61799,162019,61786,76898,2023,173811,70330,65386,73865,61797,2104,45867,64348,150037,65434,64348,44675,56855,59683,59795,76898,76430,162246,170375,64374,61797,162237,76898,76430,162350,45867,173887,2078,156713,70330,76430,64348,42047,76898,59695,59723,65386,56855,150132,45798,156713,64395,56849,150091,76460,65386,70329,41954)
 
 dir.create("graphs_R")
 apply(as.matrix(get_regions(compare_control_set)),1,draw_graph,"graphs_R",set=compare_control_set)

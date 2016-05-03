@@ -64,6 +64,9 @@ calc_freq <- function(variation){
 	variation$per_total_C <- (variation$C + variation$c)/variation$depth
 	variation$per_total_T <- (variation$T + variation$t)/variation$depth
 	variation$per_total_G <- (variation$G + variation$g)/variation$depth
+	variation$per_total_INS <- variation$INS/variation$depth
+	variation$per_total_DEL <- variation$DEL/variation$depth
+	
 	variation		
 }
 
